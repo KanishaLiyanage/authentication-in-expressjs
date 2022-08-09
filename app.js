@@ -100,14 +100,6 @@ app.post("/login",function(req, res){
 
 });
 
-// app.get("/secrets", function(req, res){
-
-//     console.log("Serving root route...");
-
-//     res.render("secrets");
-
-// });
-
 
 app.listen(port, function(){
     console.log("Server started on port " + port + ".");
