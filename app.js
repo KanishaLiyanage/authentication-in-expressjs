@@ -1,8 +1,9 @@
+require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
-const encrypt = require("mongoose-encryption");
+const encrypt = require('mongoose-encryption');
 
 const app = express();
 
@@ -21,10 +22,10 @@ const userSchema = new mongoose.Schema ({ //schema for users collection
 
 });
 
-const User = new mongoose.model("User", userSchema); //users collection
-
 const secret = "Thisisourlittlesecret.";
 userSchema.plugin(encrypt, {secret: secret, encryptedFields: ["password"]});
+
+const User = new mongoose.model("User", userSchema); //users collection  
 
 
 app.get("/", function(req, res){
@@ -68,6 +69,33 @@ app.post("/register",function(req, res){
         }
 
     });
+});
+
+app.post("/login",function(req, res){
+
+    const username = req.body.username;
+    const password = req.body.password;
+
+    User.findOne({email: username}, function(err, foundUser){
+
+        if(err){
+            console.log(err);
+        }else{
+
+            if(foundUser){
+                if(foundUser.password === password){
+                    res.render("secrets");
+                }else{
+                    console.log("password is invalid!");
+                }
+            }else{
+                console.log("Not found!");
+            }
+
+        }
+
+    });
+
 });
 
 // app.get("/secrets", function(req, res){
