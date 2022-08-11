@@ -90,6 +90,7 @@ app.get('/logout', function(req, res){
     req.logout(function(err) {
       if (err) { return next(err); }
       res.redirect('/');
+      console.log("User has successfully logged out.");
     });
 });
 
