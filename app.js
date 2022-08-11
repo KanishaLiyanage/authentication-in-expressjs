@@ -31,7 +31,7 @@ app.use(passport.session());
 
 mongoose.connect("mongodb://127.0.0.1:27017/userDB", { useNewUrlParser: true });
 
-mongoose.set("useCreateIndex", true);
+// mongoose.set("useCreateIndex", true);
 
 const userSchema = new mongoose.Schema({ //schema for users collection
 
@@ -92,7 +92,7 @@ app.post("/register", function (req, res) {
 
     User.register(
 
-        {userSchema: req.body.username},
+        {username: req.body.username},
         req.body.password,
         function(err, user){
 
