@@ -59,7 +59,7 @@ app.get("/", function (req, res) {
 
 app.get("/login", function (req, res) {
 
-    console.log("Serving root route...");
+    console.log("Serving login route...");
 
     res.render("login");
 
@@ -67,7 +67,7 @@ app.get("/login", function (req, res) {
 
 app.get("/register", function (req, res) {
 
-    console.log("Serving root route...");
+    console.log("Serving register route...");
 
     res.render("register");
 
@@ -75,17 +75,22 @@ app.get("/register", function (req, res) {
 
 app.get("/secrets", function(req, res){
 
-    console.log("Serving secrets page...");
+    if(req.isAuthenticated()){
 
-    res.render("secrets");
+        res.render("secrets");
+        console.log("Serving secrets route...");
+
+    }else{
+        res.redirect("/login");
+    }
 
 });
 
-app.get("/logout", function(req, res){
-
-    req.logout();
-    res.redirect("/");
-
+app.get('/logout', function(req, res){
+    req.logout(function(err) {
+      if (err) { return next(err); }
+      res.redirect('/');
+    });
 });
 
 app.post("/register", function (req, res) {
@@ -102,7 +107,7 @@ app.post("/register", function (req, res) {
 
                 passport.authenticate("local")(req, res, function(){
 
-                    res.redirect("secrets");
+                    res.redirect("/secrets");
 
                 });
 
@@ -150,11 +155,11 @@ app.post("/login", function (req, res) {
             console.log(err);
         }else{
 
-            passport.authenticate("local", (req, res, function(){
+            passport.authenticate("local")(req, res, function(){
 
-                res.redirect("secrets");
+                res.redirect("/secrets");
 
-            }));
+            });
 
         }
 
